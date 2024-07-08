@@ -4,7 +4,82 @@
     ViewData["Title"] = "Home page";
 }
 
+<style>
+    table, th, td {
+        border: 1px solid black;
+        border-collapse: collapse;
+    }
+
+    .addButton{
+        width: 60rem;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+</style>
+
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <h1 class="display-4">Url Shortener</h1>
+    <form asp-page-handler ="AddUrl">
+    <div class="addButton" >
+            <input type="text"  id="originalUrl" name="OriginalUrl" placeholder="Enter URL" required>
+    </div>
+        <button id="addRowButton" class="btn btn-primary">Shorten Url</button>
+    </form>
+    
+    <p>Make all your Urls shorter with the click of a button!</p>
 </div>
+
+
+
+<table id="UrlsGrid" class="display" style="width:100%">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Shortened Url</th>
+            <th>Original Url</th>
+            <th>Url Code</th>
+            <th>Created date</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var url in Model.Urls)
+        {
+            <tr>
+                <td>@url.id</td>
+                <td><a href ="@url.shortenedurl">@url.shortenedurl</a></td>
+                <td>@url.originalurl</td>
+                <td>@url.urlcode</td>
+                <td>@url.urlcreatedtime</td>
+                <td>
+                    <form method="post">
+                        <button asp-page-handler="DeleteUrl" asp-route-UrlCode="@url.urlcode" onclick="return confirm('Are you sure you want to delete this?')" >Delete</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+
+            //var datagrid = $("#UrlsGrid").DataTable({
+            //    columns: [
+            //        { data: 'id' },
+            //        { data: 'shortenedUrl' },
+            //        { data: 'originalUrl' },
+            //        { data: 'urlCode' },
+            //        { data: 'urlCreatedTime' },
+            //        {
+            //            data: null,
+            //            className: 'dt-center',
+            //            defaultContent: '<button asp-page-handler="DeleteUrl" asp-route-id="id" class="deleteBtn btn btn-danger">Delete</button>'
+            //        }
+            //    ]
+            //});
+            //console.log(datagrid);
+        });
+    </script>
+}

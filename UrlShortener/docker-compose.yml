@@ -6,3 +6,28 @@ services:
     build:
       context: .
       dockerfile: UrlShortener/Dockerfile
+
+
+  urlshortenerapi:
+    image: ${DOCKER_REGISTRY-}urlshortenerapi
+    build:
+      context: .
+      dockerfile: UrlShortenerAPI/Dockerfile
+    ports:
+    - "5000:80"
+    - "5001:443"
+
+
+
+  urlshortener.database:
+    image: postgres
+    container_name: urlshortener.database
+    environment:
+        - POSTGRES_DB=urls
+        - POSTGRES_USER=admin
+        - POSTGRES_PASSWORD=admin
+    volumes:
+        - ./containers/urls-db:/var/lib/postgresql/data
+        - ./DatabaseScripts/CreateDb.sql:/docker-entrypoint-initdb.d/create_database.sql
+    ports:
+        - 5432:5432 

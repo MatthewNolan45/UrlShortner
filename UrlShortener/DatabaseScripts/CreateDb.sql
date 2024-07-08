@@ -1,0 +1,7 @@
+CREATE TABLE ShortUrls (
+    Id UUID PRIMARY KEY,
+    ShortenedUrl VARCHAR(255) NOT NULL,
+    OriginalUrl VARCHAR(255) NOT NULL,
+    UrlCode VARCHAR(255) DEFAULT '' NOT NULL,
+    UrlCreatedTime TIMESTAMP NOT NULL
+);
